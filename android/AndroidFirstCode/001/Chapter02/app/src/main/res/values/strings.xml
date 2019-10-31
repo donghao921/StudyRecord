@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Chapter02</string>
+    <string name="button_1">按钮1</string>
+    <string name="button_2">按钮2</string>
 </resources>
