@@ -65,7 +65,7 @@ private long firstTime = 0;
 2. > 每个 Intent 只能指定一个 action, 但是可以指定多个 category
 3. > 使用隐式 Intent 不仅可以启动自己程序内的活动，还能启动其他程序的活动，这使多个应用程序之间功能共享成为可能
 
-* 通过 Intent 向下一个活动传递数据，Intent 提供了一系列的 putExtra 方法重载，把我们想要传递的数据暂存在 Intent 中，启动下一个活动后，再通过 getInten.getExtra 方法取出；
+* 通过 Intent 向下一个活动传递数据，Intent 提供了一系列的 putExtra 方法重载，把我们想要传递的数据暂存在 Intent 中，启动下一个活动后，再通过 getIntent.getExtra 方法取出；
 
 ## 活动周期
     每个活动在其生命周期中最多有四种状态
