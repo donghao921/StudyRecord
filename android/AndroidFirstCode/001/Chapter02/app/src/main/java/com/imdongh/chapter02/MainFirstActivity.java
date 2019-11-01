@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainFirstActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainFirstActivity extends BaseActivity implements View.OnClickListener {
     private Button button1;
     private TextView fitstText;
 

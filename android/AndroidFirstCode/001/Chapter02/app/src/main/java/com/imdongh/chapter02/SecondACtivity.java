@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SecondACtivity extends AppCompatActivity implements View.OnClickListener {
+public class SecondACtivity extends BaseActivity implements View.OnClickListener {
     private Button button2;
     private TextView secondText;
 
@@ -38,7 +38,8 @@ public class SecondACtivity extends AppCompatActivity implements View.OnClickLis
             Intent intent = new Intent();
             intent.putExtra("text", "second");
             setResult(100, intent);
-            finish();
+            ActivityCollector.getInstance().finishAll();
+//            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

@@ -97,10 +97,110 @@ private long firstTime = 0;
     活动的启动模式一共四种：standard(), singleTop(), singleTask(), singleInstance()
     可以在AndroidManifest.xml中通过给< activity >标签指定 android:launcheMode 属性来选择启动模式
 
-### standard 模式
+### *standard 模式*
 standard是活动的默认启动模式，每当启动一个新活动时，它会在返回栈中入栈，并处于栈顶位置；系统不会在乎这个活动是否已经在返回栈中存在，**每次启动都会创建该活动一个新的实例**
-### singleTop 模式
+### *singleTop 模式*
 singleTop
+在启动活动时，发现该活动已位于返回栈的栈顶，则认为可以直接使用它，不需要再创建新的活动实例，(注意，**如果该活动只是处于返回栈中，但并未位于栈顶，仍然会再创建新的活动实例**)
+### *singleTask 模式*
+很好的解决了 singleTop 模式的问题，该模式下，每次启动活动时，系统会先在返回栈中检查是否存在该活动的实例，如果存在，不论是否在返回栈的栈顶，都认为可以直接使用该活动，不再新建活动实例，**并将该活动之上的所有活动都出栈**，如果没有发现该实例，则新建实例
+### *singleInstance 模式*
+不同于以上3种模式，singleInstance 模式下活动会启用一个新的返回栈来管理该活动
+
+## 活动管理类
+* 需要创建一个 BaseActivity 父类，让项目中的其他 Activity 类都继承这个父类；
+* 在父类 BaseActivity 的 onCreate 方法中，使用活动管理器类 ActivityStack 的 push 方法，将所有子类活动入栈；
+* 出栈时，根据需要选择 ActivityStack 类中的出栈方法；
+``` 活动栈管理器
+public class ActivityStack {
+    private static ActivityStack stackInstance;
+    private static Stack<Activity> activityStack = new Stack<Activity>();
+
+    public static ActivityStack getInstance() {
+        if (stackInstance == null) {
+            stackInstance = new ActivityStack();
+        }
+        return stackInstance;
+    }
+
+    // 入栈
+    public static void push (Activity activity) {
+        if (activityStack == null) {
+            activityStack = new Stack<Activity>();
+        }
+        activityStack.add(activity);
+    }
+
+    // 出栈
+    public static void pop () {
+        try {
+            Activity activity = activityStack.lastElement();
+            if (activity != null) {
+                activityStack.remove(activity);
+                activity.finish();
+                activity = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 从栈的后面开始出栈，知道自身界面
+    public void popTo (Activity activity) {
+        if (activity != null) {
+            while (true) {
+                Activity lastCurrent = top();
+                if (lastCurrent == activity) {
+                    return;
+                }
+                activityStack.remove(lastCurrent);
+                lastCurrent.finish();
+            }
+        }
+    }
+
+    // 获取栈顶活动
+    public Activity top() {
+        try {
+            if (activityStack.size() >= 1) {
+                Activity activity = activityStack.lastElement();
+                return activity;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 除了栈底活动，其他全部出栈
+    public void popAllButButtom () {
+        while (true) {
+            Activity topActivity = top();
+            if (topActivity == null || topActivity == activityStack.firstElement()) {
+                return;
+            }
+            activityStack.remove(topActivity);
+            topActivity.finish();
+        }
+    }
+
+    // 全部出栈
+    public void popAll () {
+        if (activityStack == null) {
+            return;
+        }
+        while (true) {
+            Activity topActivity = top();
+            if (topActivity == null) {
+                return;
+            }
+            activityStack.remove(topActivity);
+            topActivity.finish();
+        }
+    }
+
+}
+```
 
 
 
