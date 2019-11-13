@@ -50,5 +50,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         button3 = findViewById(R.id.bt_button3);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RecyclerViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
