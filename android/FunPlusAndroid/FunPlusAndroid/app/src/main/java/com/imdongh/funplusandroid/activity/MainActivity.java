@@ -1,7 +1,9 @@
-package com.imdongh.funplusandroid;
+package com.imdongh.funplusandroid.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.imdongh.funplusandroid.R;
 
 public class MainActivity extends AppCompatActivity {
 
