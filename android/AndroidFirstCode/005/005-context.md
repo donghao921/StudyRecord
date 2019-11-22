@@ -52,5 +52,29 @@ public String load() {
     return content.toString();
 }
 ```
+### SharedPreferences存储
+* 有三种方法用于得到 SharedPreferences 对象, SharePreferences 文件都是存放在 /data/data//shared_prefs/ 目录下的。
+> * Context 类中的 getSharedPreferences() 方法，可以任意指定其文件名，第一个参数为指定文件名，第二个参数默认为 MODE_PRIVATE，其他模式都被废弃。
+> * Activity 类中的 getPreferences() 方法，使用当前活动的类名作为文件名，只接收一个默认模式参数。
+> * PreferenceManager类中的 getDefaultSharedPreferences() 方法，使用当前应用程序的包名作为前缀来命名文件名，接收一个 Context 参数；得到 SharedPreferences 对象后，分3步保存参数：
+>> 1. 调用 SharedPreferences 对象的 edit() 方法来获取一个 SharedPreferences.Editor 对象；
+>> 2. 向 SharedPreferences.Editor 对象中添加数据；
+>> 3. 调用 apply() 方法向数据库提交数据；
+```
+private void setSharePreference(String string) {
+        SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+        editor.putString("key", string);
+        editor.apply();
+    }
+```
+
+* 从 SharedPreferences 中读取数据
+```
+private void getSharePreference() {
+        SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
+        String key = sp.getString("key", "");
+    }
+```
+### SQLite数据库存储
 
 

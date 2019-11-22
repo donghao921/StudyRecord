@@ -1,6 +1,8 @@
 package com.imdongh.chapter06;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText input;
     private Button save;
     private Button load;
+    private Button share1;
+    private Button share2;
     private TextView text;
 
     @Override
@@ -33,8 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         input = findViewById(R.id.et_input);
         save = findViewById(R.id.bt_save);
         load = findViewById(R.id.bt_load);
+        share1 = findViewById(R.id.bt_set_share);
+        share2 = findViewById(R.id.bt_get_share);
         save.setOnClickListener(this);
         load.setOnClickListener(this);
+        share1.setOnClickListener(this);
+        share2.setOnClickListener(this);
+
         text = findViewById(R.id.tv_text);
     }
 
@@ -107,6 +117,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     text.setText(inputString);
                 }
                 break;
+            case R.id.bt_set_share:
+                String inputString2 = loadData();
+                setSharePreference(inputString2);
+                break;
+            case R.id.bt_get_share:
+                getSharePreference();
+                break;
         }
+    }
+
+    private void setSharePreference(String string) {
+        SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+        editor.putString("key", string);
+        editor.apply();
+
+    }
+
+    private void getSharePreference() {
+        SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
+        String key = sp.getString("key", "");
+        Toast.makeText(this, "key="+key, Toast.LENGTH_SHORT).show();
+
     }
 }
