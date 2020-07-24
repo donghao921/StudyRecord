@@ -1,5 +1,6 @@
-package com.imdongh.funplusandroid.base;
+package com.dongh.baselib.mvp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 
-public class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends FragmentActivity implements BaseView{
     // 该Activity实例，命名为context是因为大部分方法都只需要context，写成context使用更方便
     protected BaseActivity context = null;
+    protected T mPresenter;
 
     // 该Activity的界面，即contentView
     protected View view = null;
@@ -36,7 +38,41 @@ public class BaseActivity extends FragmentActivity {
         isAlive =true;
         fragmentManager = getSupportFragmentManager();
         inflater = getLayoutInflater();
+
+        //
+        mPresenter = createPresenter();
+        if (mPresenter != null) {
+            mPresenter.attach(this);
+        }
     }
 
+    protected abstract T createPresenter();
 
+    @Override
+    protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.detach();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
 }

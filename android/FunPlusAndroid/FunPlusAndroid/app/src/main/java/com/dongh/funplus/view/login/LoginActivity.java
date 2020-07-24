@@ -1,5 +1,7 @@
-package com.imdongh.funplusandroid.activity;
+package com.dongh.funplus.view.login;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,16 +13,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.imdongh.funplusandroid.R;
-import com.imdongh.funplusandroid.base.BaseActivity;
+import com.dongh.funplus.R;
+import com.dongh.funplus.base.BaseActivity;
+import com.dongh.funplus.view.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginView {
     private static final String TAG = "LoginActivity";
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+//    private LoginPresenter loginPresenter;
 
     @BindView(R.id.login_name)
     EditText loginName;
@@ -38,6 +42,8 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         ButterKnife.bind(this);
+//        loginPresenter = new LoginPresenter();
+//        loginPresenter.attach(this);
 
         boolean rememberPwd = preferences.getBoolean("remember_pwd", false);
         if (rememberPwd) {
@@ -62,8 +68,8 @@ public class LoginActivity extends BaseActivity {
                         editor.clear();
                     }
                     editor.apply();
+                    mPresenter.login(name, password);
 
-                    Toast.makeText(getBaseContext(), "login", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getBaseContext(), "empty", Toast.LENGTH_SHORT).show();
                 }
@@ -83,5 +89,36 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected LoginPresenter createPresenter() {
+        return new LoginPresenter();
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void resultLogin(String result) {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        Toast.makeText(getBaseContext(), "login", Toast.LENGTH_SHORT).show();
     }
 }

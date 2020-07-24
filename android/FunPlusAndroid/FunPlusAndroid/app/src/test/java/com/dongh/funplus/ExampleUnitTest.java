@@ -1,4 +1,4 @@
-package com.imdongh.funplusandroid;
+package com.dongh.funplus;
 
 import org.junit.Test;
 
