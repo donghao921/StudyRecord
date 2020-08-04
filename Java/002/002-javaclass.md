@@ -9,4 +9,9 @@
     > 每个元素的固定编号，叫做索引，从0开始递增，类型int
 
     > int[] array = new int[9];
+
+## 002 类 Class
+* class
+    > 一个类以 public class 开头，public class 代表这个类是公共类，类名必须和文件名相同
+    > 
     

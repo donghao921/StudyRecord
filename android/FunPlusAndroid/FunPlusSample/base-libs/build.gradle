@@ -1,0 +1,125 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner rootProject.ext.android["AndroidJUnitRunner"]
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //test
+    testImplementation rootProject.ext.dependencies["junit"]
+    androidTestImplementation rootProject.ext.dependencies["runner"]
+    androidTestImplementation rootProject.ext.dependencies["espresso-core"]
+    debugApi rootProject.ext.dependencies["canary-debug"]
+    releaseApi rootProject.ext.dependencies["canary-release"]
+
+    //support
+    api(rootProject.ext.dependencies["support-v4"]) {
+        exclude module: 'support-annotations'
+    }
+    api(rootProject.ext.dependencies["appcompat-v7"]) {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    api(rootProject.ext.dependencies["design"]) {
+        exclude module: 'support-annotations'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    api rootProject.ext.dependencies["annotations"]
+    api rootProject.ext.dependencies["constraint-layout"]
+
+    //rx
+    api rootProject.ext.dependencies["rxjava2"]
+    api(rootProject.ext.dependencies["rxandroid2"]) {
+        exclude module: 'rxjava'
+    }
+    api(rootProject.ext.dependencies["rxcache2"]) {
+        exclude module: 'rxjava'
+    }
+    implementation(rootProject.ext.dependencies["rxcache-jolyglot-gson"]) {
+        exclude module: 'gson'
+    }
+    api(rootProject.ext.dependencies["rxlifecycle2"]) {
+        exclude module: 'rxjava'
+    }
+    api(rootProject.ext.dependencies["rxlifecycle2-android"]) {
+        exclude module: 'support-annotations'
+        exclude module: 'rxjava'
+        exclude module: 'rxandroid'
+        exclude module: 'rxlifecycle'
+    }
+    api rootProject.ext.dependencies["rxlifecycle2-components"]
+    api(rootProject.ext.dependencies["rxpermissions"]) {
+        exclude module: 'rxjava'
+        exclude module: 'support-annotations'
+    }
+
+    //network
+    api(rootProject.ext.dependencies["retrofit"]) {
+        exclude module: 'okhttp'
+        exclude module: 'okio'
+    }
+    api(rootProject.ext.dependencies["retrofit-converter-gson"]) {
+        exclude module: 'gson'
+        exclude module: 'okhttp'
+        exclude module: 'okio'
+        exclude module: 'retrofit'
+    }
+    api(rootProject.ext.dependencies["retrofit-adapter-rxjava2"]) {
+        exclude module: 'rxjava'
+        exclude module: 'okhttp'
+        exclude module: 'retrofit'
+        exclude module: 'okio'
+    }
+    api rootProject.ext.dependencies["okhttp3"]
+    api rootProject.ext.dependencies["okhttp-logging-interceptor"]
+    api(rootProject.ext.dependencies["glide"]) {
+        exclude module: 'support-v4'
+    }
+    annotationProcessor(rootProject.ext.dependencies["glide-compiler"])
+
+    //view
+    api(rootProject.ext.dependencies["butterknife"]) {
+        exclude module: 'support-annotations'
+    }
+
+    //tools
+    api rootProject.ext.dependencies["gson"]
+    api rootProject.ext.dependencies["eventbus"]
+    api rootProject.ext.dependencies["logger"]
+    api rootProject.ext.dependencies["timber"]
+    api rootProject.ext.dependencies["multidex"]
+
+}
+
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    repoName = 'maven'  // 仓库名，没有填写默认仓库是maven
+    userOrg = 'icecola7'  // bintray注册的用户名
+    groupId = 'com.cxz.baselibs'  // implementation引用时的第1部分groupId
+    artifactId = 'mvp'  // implementation引用时的第2部分项目名
+    publishVersion = '1.0.0'  // implementation引用时的第3部分版本号
+    desc = 'This is a java mvp framework to help you easily achieve mvp structure.' // 项目描述
+    website = 'https://github.com/iceCola7/MVPSamples'  // github 托管地址
+}

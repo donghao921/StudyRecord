@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorSienna">#FF8247</color>
+    <color name="DodgerBlue">#1E90FF</color>
+    <color name="textGrey">#828282</color>
+    <color name="Tomato">#FF6347</color>
+    <color name="DarkGrey">#E8E8E8</color>
+    <color name="WhiteSmoke">#F5F5F5</color>
+
+    <color name="white">#FFFFFF</color>
 </resources>

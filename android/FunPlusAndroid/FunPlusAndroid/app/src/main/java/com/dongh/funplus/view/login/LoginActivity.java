@@ -1,6 +1,5 @@
 package com.dongh.funplus.view.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +12,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dongh.baselib.mvp.BaseActivity;
 import com.dongh.funplus.R;
-import com.dongh.funplus.base.BaseActivity;
+import com.dongh.funplus.service.bean.LoginBean;
 import com.dongh.funplus.view.main.MainActivity;
 
 import butterknife.BindView;
@@ -24,7 +24,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     private static final String TAG = "LoginActivity";
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-//    private LoginPresenter loginPresenter;
 
     @BindView(R.id.login_name)
     EditText loginName;
@@ -42,8 +41,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         setContentView(R.layout.activity_login);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         ButterKnife.bind(this);
-//        loginPresenter = new LoginPresenter();
-//        loginPresenter.attach(this);
+        setPresenter(new LoginPresenter(this));
 
         boolean rememberPwd = preferences.getBoolean("remember_pwd", false);
         if (rememberPwd) {
@@ -68,7 +66,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                         editor.clear();
                     }
                     editor.apply();
-                    mPresenter.login(name, password);
+                    getmBasePresenter().login(name, password);
 
                 } else {
                     Toast.makeText(getBaseContext(), "empty", Toast.LENGTH_SHORT).show();
@@ -92,16 +90,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    protected LoginPresenter createPresenter() {
-        return new LoginPresenter();
-    }
-
-    @Override
-    public Context getContext() {
-        return null;
-    }
-
-    @Override
     public void showLoading() {
 
     }
@@ -117,7 +105,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void resultLogin(String result) {
+    public void resultLogin(LoginBean result) {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         Toast.makeText(getBaseContext(), "login", Toast.LENGTH_SHORT).show();
     }
